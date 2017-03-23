@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Dmitriy Kirilyuk](https://up.htmlacademy.ru/javascript/9/user/93651).
-* Наставник: `Неизвестно`.
+* Наставник: `Нету`.
 
 ---
 
