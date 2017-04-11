@@ -286,4 +286,4 @@ for (var k = 0; k < offerList.features.length; k++) {
 lodgeFeatures.appendChild(featuresFragment);
 lodgeDescription.textContent = offerList.description;
 dialogAvatar.src = templateData.author.avatar;
-lodgePanel.appendChild(templateCopy);
+offerDialog.replaceChild(templateCopy, lodgePanel);
