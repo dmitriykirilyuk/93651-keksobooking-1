@@ -237,7 +237,7 @@ for (var i = 0; i < offersList.length; i++) {
   pin.classList.add('pin');
   pin.style.left = pinData.location.x + 'px';
   pin.style.top = pinData.location.y + 'px';
-
+  pin.setAttribute('tabindex', '0');
   pinImage.classList.add('rounded');
   pinImage.src = pinData.author.avatar;
   pinImage.width = '40';
@@ -287,3 +287,48 @@ lodgeFeatures.appendChild(featuresFragment);
 lodgeDescription.textContent = offerList.description;
 dialogAvatar.src = templateData.author.avatar;
 offerDialog.replaceChild(templateCopy, lodgePanel);
+
+var pinMap = document.querySelector('.tokyo__pin-map');
+var pins = pinMap.querySelectorAll('.pin');
+var dialog = document.querySelector('.dialog');
+var dialogClose = dialogTitle.querySelector('.dialog__close');
+var ESCAPE_KEY = 27;
+var ENTER_KEY = 13;
+pinMap.addEventListener('click', function (event) {
+  var pinActive = event.target;
+  for (var l = 0; l < pins.length; l++) {
+    var pinMarked = pins[l];
+    // pinMarked[l] = offersList[l];
+    if (pinMarked.classList.contains('pin--active')) {
+      pinMarked.classList.remove('pin--active');
+    }
+  }
+  pinActive.classList.add('pin--active');
+  dialog.style.display = 'block';
+
+  dialogClose.addEventListener('click', function () {
+    dialog.style.display = 'none';
+    pinActive.classList.remove('pin--active');
+  });
+
+  dialogClose.addEventListener('keydown', function (evt) {
+    if (evt.keyCode === ENTER_KEY) {
+      dialog.style.display = 'none';
+      pinActive.classList.remove('pin--active');/* тут не шарю как сделать */
+    }
+  });
+
+  document.addEventListener('keydown', function (evt) {
+    if (evt.keyCode === ESCAPE_KEY) {
+      dialog.style.display = 'none';
+      pinActive.classList.remove('pin--active');
+    }
+  });
+});
+
+
+pinMap.addEventListener('keydown', function (event) {
+  if (event.keyCode === ENTER_KEY) {
+    dialog.style.display = 'block';
+  }
+});
