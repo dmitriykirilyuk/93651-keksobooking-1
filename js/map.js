@@ -238,6 +238,7 @@ for (var i = 0; i < offersList.length; i++) {
   pin.style.left = pinData.location.x + 'px';
   pin.style.top = pinData.location.y + 'px';
   pin.setAttribute('tabindex', '0');
+  pin.setAttribute('data-index', i);
   pinImage.classList.add('rounded');
   pinImage.src = pinData.author.avatar;
   pinImage.width = '40';
@@ -247,46 +248,51 @@ for (var i = 0; i < offersList.length; i++) {
   fragment.appendChild(pin);
 }
 pinContainer.appendChild(fragment);
-
 var template = document.querySelector('#lodge-template');
-var templateData = offersList[0];
-var templateCopy = template.content.cloneNode(true);
+
 var offerDialog = document.querySelector('#offer-dialog');
 var lodgePanel = offerDialog.querySelector('.dialog__panel');
-var lodgeTitle = templateCopy.querySelector('.lodge__title');
-var lodgeAddress = templateCopy.querySelector('.lodge__address');
-var lodgePrice = templateCopy.querySelector('.lodge__price');
-var lodgeType = templateCopy.querySelector('.lodge__type');
-var lodgeRooms = templateCopy.querySelector('.lodge__rooms-and-guests');
-var lodgeFeatures = templateCopy.querySelector('.lodge__features');
-var lodgeCheckIn = templateCopy.querySelector('.lodge__checkin-time');
-var lodgeDescription = templateCopy.querySelector('.lodge__description');
+
 var dialogTitle = offerDialog.querySelector('.dialog__title');
 var dialogAvatar = dialogTitle.querySelector('img');
-var offerList = templateData.offer;
-lodgeTitle.textContent = offerList.title;
-lodgeAddress.textContent = offerList.address;
-lodgePrice.textContent = offerList.price + '&#x20bd;/ночь';
-if (offerList.type === 'flat') {
-  lodgeType.textContent = 'Квартира';
-} else if (offerList.type === 'bungalo') {
-  lodgeType.textContent = 'Бунгало';
-} else {
-  lodgeType.textContent = 'Дом';
-}
-lodgeRooms.textContent = 'Для ' + offerList.price + ' гостей в ' + offerList.rooms + ' комнатах';
-lodgeCheckIn.textContent = 'Заезд после ' + offerList.checkin + ', выезд до ' + offerList.checkout;
-var featuresFragment = document.createDocumentFragment();
-for (var k = 0; k < offerList.features.length; k++) {
-  var featuresList = offerList.features[k];
-  var featuresSpan = document.createElement('span');
-  featuresSpan.classList.add('feature__image', 'feature__image--' + featuresList);
-  featuresFragment.appendChild(featuresSpan);
-}
-lodgeFeatures.appendChild(featuresFragment);
-lodgeDescription.textContent = offerList.description;
-dialogAvatar.src = templateData.author.avatar;
-offerDialog.replaceChild(templateCopy, lodgePanel);
+
+var createDialog = function (newDialog) {
+  var templateCopy = template.content.cloneNode(true);
+  var templateData = offersList[0];
+  templateData = newDialog;
+  var lodgeTitle = templateCopy.querySelector('.lodge__title');
+  var lodgeAddress = templateCopy.querySelector('.lodge__address');
+  var lodgePrice = templateCopy.querySelector('.lodge__price');
+  var lodgeType = templateCopy.querySelector('.lodge__type');
+  var lodgeRooms = templateCopy.querySelector('.lodge__rooms-and-guests');
+  var lodgeFeatures = templateCopy.querySelector('.lodge__features');
+  var lodgeCheckIn = templateCopy.querySelector('.lodge__checkin-time');
+  var lodgeDescription = templateCopy.querySelector('.lodge__description');
+  var offerList = templateData.offer;
+  lodgeTitle.textContent = offerList.title;
+  lodgeAddress.textContent = offerList.address;
+  lodgePrice.textContent = offerList.price + '&#x20bd;/ночь';
+  if (offerList.type === 'flat') {
+    lodgeType.textContent = 'Квартира';
+  } else if (offerList.type === 'bungalo') {
+    lodgeType.textContent = 'Бунгало';
+  } else {
+    lodgeType.textContent = 'Дом';
+  }
+  lodgeRooms.textContent = 'Для ' + offerList.price + ' гостей в ' + offerList.rooms + ' комнатах';
+  lodgeCheckIn.textContent = 'Заезд после ' + offerList.checkin + ', выезд до ' + offerList.checkout;
+  var featuresFragment = document.createDocumentFragment();
+  for (var k = 0; k < offerList.features.length; k++) {
+    var featuresList = offerList.features[k];
+    var featuresSpan = document.createElement('span');
+    featuresSpan.classList.add('feature__image', 'feature__image--' + featuresList);
+    featuresFragment.appendChild(featuresSpan);
+  }
+  lodgeFeatures.appendChild(featuresFragment);
+  lodgeDescription.textContent = offerList.description;
+  dialogAvatar.src = templateData.author.avatar;
+  offerDialog.replaceChild(templateCopy, lodgePanel);
+};
 
 var pinMap = document.querySelector('.tokyo__pin-map');
 var pins = pinMap.querySelectorAll('.pin');
@@ -294,41 +300,47 @@ var dialog = document.querySelector('.dialog');
 var dialogClose = dialogTitle.querySelector('.dialog__close');
 var ESCAPE_KEY = 27;
 var ENTER_KEY = 13;
+var pinActive;
 pinMap.addEventListener('click', function (event) {
-  var pinActive = event.target;
-  for (var l = 0; l < pins.length; l++) {
-    var pinMarked = pins[l];
-    // pinMarked[l] = offersList[l];
-    if (pinMarked.classList.contains('pin--active')) {
-      pinMarked.classList.remove('pin--active');
-    }
+  if (pinActive) {
+    pinActive.classList.remove('pin--active');
   }
+  pinActive = event.target;
+  var index = pinActive.getAttribute('data-index');
+  var offer = offersList[index];
+  createDialog(offer);
   pinActive.classList.add('pin--active');
   dialog.style.display = 'block';
-
-  dialogClose.addEventListener('click', function () {
-    dialog.style.display = 'none';
-    pinActive.classList.remove('pin--active');
-  });
-
-  dialogClose.addEventListener('keydown', function (evt) {
-    if (evt.keyCode === ENTER_KEY) {
-      dialog.style.display = 'none';
-      pinActive.classList.remove('pin--active');/* тут не шарю как сделать */
-    }
-  });
-
-  document.addEventListener('keydown', function (evt) {
-    if (evt.keyCode === ESCAPE_KEY) {
-      dialog.style.display = 'none';
-      pinActive.classList.remove('pin--active');
-    }
-  });
 });
 
+dialogClose.addEventListener('click', function () {
+  dialog.style.display = 'none';
+  pinActive.classList.remove('pin--active');
+  pinActive = null;
+});
+
+document.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === ESCAPE_KEY) {
+    dialog.style.display = 'none';
+    pinActive.classList.remove('pin--active');
+    pinActive = null;
+  }
+
+  if (document.activeElement === dialogClose && evt.keyCode === ENTER_KEY) {
+    dialog.style.display = 'none';
+    pinActive.classList.remove('pin--active');
+    pinActive = null;
+    evt.preventDefault();
+  }
+});
 
 pinMap.addEventListener('keydown', function (event) {
   if (event.keyCode === ENTER_KEY) {
     dialog.style.display = 'block';
+    pinActive = event.target;
+    pinActive.classList.add('pin--active');
   }
 });
+
+var formTitle = document.querySelector('.form__element');
+var inputTitle = formTitle.querySelector('#title');
