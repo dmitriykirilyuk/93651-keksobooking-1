@@ -250,16 +250,9 @@ for (var i = 0; i < offersList.length; i++) {
 pinContainer.appendChild(fragment);
 var template = document.querySelector('#lodge-template');
 
-var offerDialog = document.querySelector('#offer-dialog');
-var lodgePanel = offerDialog.querySelector('.dialog__panel');
-
-var dialogTitle = offerDialog.querySelector('.dialog__title');
-var dialogAvatar = dialogTitle.querySelector('img');
-
 var createDialog = function (newDialog) {
   var templateCopy = template.content.cloneNode(true);
-  var templateData = offersList[0];
-  templateData = newDialog;
+  var templateData = newDialog;
   var lodgeTitle = templateCopy.querySelector('.lodge__title');
   var lodgeAddress = templateCopy.querySelector('.lodge__address');
   var lodgePrice = templateCopy.querySelector('.lodge__price');
@@ -268,6 +261,10 @@ var createDialog = function (newDialog) {
   var lodgeFeatures = templateCopy.querySelector('.lodge__features');
   var lodgeCheckIn = templateCopy.querySelector('.lodge__checkin-time');
   var lodgeDescription = templateCopy.querySelector('.lodge__description');
+  var offerDialog = document.querySelector('#offer-dialog');
+  var lodgePanel = offerDialog.querySelector('.dialog__panel');
+  var dialogTitle = offerDialog.querySelector('.dialog__title');
+  var dialogAvatar = dialogTitle.querySelector('img');
   var offerList = templateData.offer;
   lodgeTitle.textContent = offerList.title;
   lodgeAddress.textContent = offerList.address;
@@ -296,7 +293,7 @@ var createDialog = function (newDialog) {
 
 var pinMap = document.querySelector('.tokyo__pin-map');
 var dialog = document.querySelector('.dialog');
-var dialogClose = dialogTitle.querySelector('.dialog__close');
+var dialogClose = document.querySelector('.dialog__close');
 var ESCAPE_KEY = 27;
 var ENTER_KEY = 13;
 var pinActive;
@@ -305,6 +302,9 @@ pinMap.addEventListener('click', function (event) {
     pinActive.classList.remove('pin--active');
   }
   pinActive = event.target;
+  if (event.target.nodeName === 'IMG') {
+    pinActive = pinActive.parentNode;
+  }
   var index = pinActive.getAttribute('data-index');
   var offer = offersList[index];
   createDialog(offer);
@@ -363,12 +363,10 @@ inputPrice.setAttribute('max', 1000000);
 inputPrice.setAttribute('placeholder', 1000);
 
 timeIn.addEventListener('change', function () {
-  // timeOut.selectedIndex = timeIn.selectedIndex;
   timeOut.value = timeIn.value;
 });
 
 timeOut.addEventListener('change', function () {
-  // timeIn.selectedIndex = timeOut.selectedIndex;
   timeIn.value = timeOut.value;
 });
 
@@ -405,10 +403,20 @@ roomsNumber.addEventListener('change', function () {
 });
 
 var fieldsToValidate = [inputTitle, inputPrice];
-formSubmit.addEventListener('click', function () {
+var form = document.querySelector('.notice__form');
+formSubmit.addEventListener('click', function (event) {
+  event.preventDefault();
+  var hasError = false;
   for (var m = 0; m < fieldsToValidate.length; m++) {
     if (!fieldsToValidate[m].checkValidity()) {
+      hasError = true;
       fieldsToValidate[m].style.border = '3px solid red';
+    } else {
+      fieldsToValidate[m].style.border = '3px solid green';
     }
   }
+  if (!hasError) {
+    form.reset();
+  }
+  event.preventDefault();
 });
