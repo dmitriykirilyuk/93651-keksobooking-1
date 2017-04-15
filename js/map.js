@@ -352,6 +352,7 @@ var timeOut = document.querySelector('#timeout');
 var housingType = document.querySelector('#type');
 var roomsNumber = document.querySelector('#room_number');
 var roomCapacity = document.querySelector('#capacity');
+var formSubmit = document.querySelector('.form__submit');
 inputTitle.required = 'true';
 inputTitle.setAttribute('minlength', 30);
 inputTitle.setAttribute('maxlength', 100);
@@ -400,5 +401,14 @@ roomsNumber.addEventListener('change', function () {
   } else {
     roomCapacity.value = 'no guests';
     roomCapacity.options[0].setAttribute('disabled', true);
+  }
+});
+
+var fieldsToValidate = [inputTitle, inputPrice];
+formSubmit.addEventListener('click', function () {
+  for (var m = 0; m < fieldsToValidate.length; m++) {
+    if (!fieldsToValidate[m].checkValidity()) {
+      fieldsToValidate[m].style.border = '3px solid red';
+    }
   }
 });
