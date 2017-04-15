@@ -295,7 +295,6 @@ var createDialog = function (newDialog) {
 };
 
 var pinMap = document.querySelector('.tokyo__pin-map');
-var pins = pinMap.querySelectorAll('.pin');
 var dialog = document.querySelector('.dialog');
 var dialogClose = dialogTitle.querySelector('.dialog__close');
 var ESCAPE_KEY = 27;
@@ -338,9 +337,12 @@ pinMap.addEventListener('keydown', function (event) {
   if (event.keyCode === ENTER_KEY) {
     dialog.style.display = 'block';
     pinActive = event.target;
+    var index = pinActive.getAttribute('data-index');
+    var offer = offersList[index];
+    createDialog(offer);
     pinActive.classList.add('pin--active');
   }
 });
 
-var formTitle = document.querySelector('.form__element');
-var inputTitle = formTitle.querySelector('#title');
+// var formTitle = document.querySelector('.form__element');
+// var inputTitle = formTitle.querySelector('#title');
