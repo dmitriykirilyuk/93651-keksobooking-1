@@ -108,7 +108,7 @@ window.offersList = [
     },
 
     'location': {
-      'x': 600,
+      'x': 200,
       'y': 300
     }
   },
