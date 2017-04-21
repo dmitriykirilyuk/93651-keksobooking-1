@@ -31,9 +31,11 @@
     }
     var index = pinActive.getAttribute('data-index');
     var offer = window.offersList[index];
-    window.createDialog(offer);
-    pinActive.classList.add('pin--active');
-    dialog.style.display = 'block';
+    if (offer) {
+      window.createDialog(offer);
+      pinActive.classList.add('pin--active');
+      dialog.style.display = 'block';
+    }
   };
 
   dialogClose.addEventListener('click', function () {
