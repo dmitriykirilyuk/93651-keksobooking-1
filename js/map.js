@@ -1,228 +1,78 @@
 'use strict';
-window.offersList = [
-  {
-    'author': {
-      'avatar': 'img/avatars/user01.png'
-    },
-
-    'offer': {
-      'title': 'Большая уютная квартира',
-      'address': 'location.x, location.y',
-      'price': 1000,
-      'type': 'flat',
-      'rooms': 1,
-      'guests': 22,
-      'checkin': '12:00',
-      'checkout': '13:00',
-      'features': [
-        'wifi',
-        'dishwasher',
-        'parking'],
-      'description': '',
-      'photos': ''
-    },
-
-    'location': {
-      'x': 250,
-      'y': 200
+(function () {
+  var pinMap = document.querySelector('.tokyo__pin-map');
+  pinMap.addEventListener('click', window.activatePin);
+  pinMap.addEventListener('keydown', window.activatePinByKey);
+  var drawPins = function (pins) {
+    var fragment = document.createDocumentFragment();
+    for (var i = 0; i < pins.length; i++) {
+      var pin = window.getPinNode(pins[i], i);
+      fragment.appendChild(pin);
     }
-  },
-  {
-    'author': {
-      'avatar': 'img/avatars/user02.png'
-    },
+    pinMap.appendChild(fragment);
+  };
+  drawPins(window.offersList);
 
-    'offer': {
-      'title': 'Маленькая неуютная квартира',
-      'address': 'location.x, location.y',
-      'price': 5000,
-      'type': 'flat',
-      'rooms': 3,
-      'guests': 2,
-      'checkin': '14:00',
-      'checkout': '12:00',
-      'features': [
-        'wifi',
-        'dishwasher',
-        'parking',
-        'elevator'],
-      'description': '',
-      'photos': ''
-    },
+  var draggablePin = document.querySelector('.pin__main');
+  var addressField = document.querySelector('#address');
+  var tokyoMap = document.querySelector('.tokyo');
+  addressField.setAttribute('readonly', true);
+  draggablePin.addEventListener('mousedown', function (evt) {
+    evt.preventDefault();
 
-    'location': {
-      'x': 350,
-      'y': 150
-    }
-  },
-  {
-    'author': {
-      'avatar': 'img/avatars/user03.png'
-    },
+    var startCoordinates = {
+      x: evt.clientX,
+      y: evt.clientY
+    };
 
-    'offer': {
-      'title': 'Огромный прекрасный дворец',
-      'address': 'location.x, location.y',
-      'price': 3000,
-      'type': 'bungalo',
-      'rooms': 4,
-      'guests': 3,
-      'checkin': '12:00',
-      'checkout': '12:00',
-      'features': [
-        'wifi',
-        'conditioner',
-        'parking',
-        'elevator'],
-      'description': '',
-      'photos': ''
-    },
+    var onMouseMove = function (moveEvt) {
+      moveEvt.preventDefault();
 
-    'location': {
-      'x': 450,
-      'y': 350
-    }
-  },
-  {
-    'author': {
-      'avatar': 'img/avatars/user04.png'
-    },
+      var shift = {
+        x: startCoordinates.x - moveEvt.clientX,
+        y: startCoordinates.y - moveEvt.clientY
+      };
 
-    'offer': {
-      'title': 'Маленький ужасный дворец',
-      'address': 'location.x, location.y',
-      'price': 5000,
-      'type': 'bungalo',
-      'rooms': 5,
-      'guests': 12,
-      'checkin': '12:00',
-      'checkout': '13:00',
-      'features': [
-        'wifi',
-        'conditioner',
-        'parking',
-        'elevator',
-        'washer'],
-      'description': '',
-      'photos': ''
-    },
+      startCoordinates = {
+        x: moveEvt.clientX,
+        y: moveEvt.clientY
+      };
+      var posLeftPin = draggablePin.offsetLeft - shift.x;
+      var posTopPin = draggablePin.offsetTop - shift.y;
+      console.log(posLeftPin, posTopPin)
+      if (posLeftPin > 1163) {
+        posLeftPin = 1163;
+        tokyoMap.removeEventListener('mousemove', onMouseMove);
+        tokyoMap.removeEventListener('mouseup', onMouseUp);
+        console.log('akfl');
+      } else if (posLeftPin < -37) {
+        posLeftPin = -37;
+        tokyoMap.removeEventListener('mousemove', onMouseMove);
+        tokyoMap.removeEventListener('mouseup', onMouseUp);
+      } else if (posTopPin > 606) {
+        posTopPin = 606;
+        tokyoMap.removeEventListener('mousemove', onMouseMove);
+        tokyoMap.removeEventListener('mouseup', onMouseUp);
+      }
+      draggablePin.style.top = posTopPin + 'px';
+      draggablePin.style.left = posLeftPin + 'px';
+      var PIN_HEIGHT = 94;
+      var PIN_WIDTH_HALF = 37;
+      var offsetTopPin = draggablePin.offsetTop + PIN_HEIGHT;
+      var offsetLeftPin = draggablePin.offsetLeft + PIN_WIDTH_HALF;
 
-    'location': {
-      'x': 600,
-      'y': 300
-    }
-  },
-  {
-    'author': {
-      'avatar': 'img/avatars/user05.png'
-    },
+      addressField.setAttribute('value', 'x: ' + (offsetLeftPin) + ' , ' + 'y: ' + (offsetTopPin));
+    };
+    var onMouseUp = function (upEvt) {
+      upEvt.preventDefault();
 
-    'offer': {
-      'title': 'Красивый гостевой домик',
-      'address': 'location.x, location.y',
-      'price': 7000,
-      'type': 'house',
-      'rooms': 3,
-      'guests': 8,
-      'checkin': '12:00',
-      'checkout': '13:00',
-      'features': [
-        'wifi',
-        'conditioner',
-        'parking',
-        'elevator',
-        'washer',
-        'dishwasher'],
-      'description': '',
-      'photos': ''
-    },
+      tokyoMap.removeEventListener('mousemove', onMouseMove);
+      tokyoMap.removeEventListener('mouseup', onMouseUp);
+    };
 
-    'location': {
-      'x': 820,
-      'y': 420
-    }
-  },
-  {
-    'author': {
-      'avatar': 'img/avatars/user06.png'
-    },
+    tokyoMap.addEventListener('mousemove', onMouseMove);
+    tokyoMap.addEventListener('mouseup', onMouseUp);
 
-    'offer': {
-      'title': 'Некрасивый негостеприимный домик',
-      'address': 'location.x, location.y',
-      'price': 1500,
-      'type': 'house',
-      'rooms': 2,
-      'guests': 5,
-      'checkin': '13:00',
-      'checkout': '13:00',
-      'features': [
-        'wifi',
-        'conditioner',
-        'parking'],
-      'description': '',
-      'photos': ''
-    },
 
-    'location': {
-      'x': 340,
-      'y': 410
-    }
-  },
-  {
-    'author': {
-      'avatar': 'img/avatars/user07.png'
-    },
-
-    'offer': {
-      'title': 'Уютное бунгало далеко от моря',
-      'address': 'location.x, location.y',
-      'price': 4500,
-      'type': 'bungalo',
-      'rooms': 3,
-      'guests': 3,
-      'checkin': '12:00',
-      'checkout': '13:00',
-      'features': [
-        'wifi',
-        'conditioner',
-        'parking',
-        'elevator'],
-      'description': '',
-      'photos': ''
-    },
-
-    'location': {
-      'x': 900,
-      'y': 455
-    }
-  },
-  {
-    'author': {
-      'avatar': 'img/avatars/user08.png'
-    },
-
-    'offer': {
-      'title': 'Неуютное бунгало по колено в воде',
-      'address': 'location.x, location.y',
-      'price': 8500,
-      'type': 'bungalo',
-      'rooms': 5,
-      'guests': 10,
-      'checkin': '14:00',
-      'checkout': '13:00',
-      'features': [
-        'wifi',
-        'conditioner',
-        'parking',
-        'elevator'],
-      'description': '',
-      'photos': ''
-    },
-
-    'location': {
-      'x': 835,
-      'y': 375
-    }
-  },
-];
+  });
+})();
