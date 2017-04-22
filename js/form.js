@@ -21,46 +21,17 @@
   inputPrice.setAttribute('max', 1000000);
   inputPrice.setAttribute('placeholder', 1000);
 
-  timeIn.addEventListener('change', function () {
-    timeOut.value = timeIn.value;
-  });
+  var syncValues = function (element, value) {
+    element.value = value;
+  };
 
-  timeOut.addEventListener('change', function () {
-    timeIn.value = timeOut.value;
-  });
-
-  housingType.addEventListener('change', function () {
-    if (housingType.value === 'flat') {
-      inputPrice.setAttribute('min', 1000);
-      inputPrice.setAttribute('value', 1000);
-    } else if (housingType.value === 'slum') {
-      inputPrice.setAttribute('min', 0);
-      inputPrice.setAttribute('value', 0);
-    } else {
-      inputPrice.setAttribute('min', 10000);
-      inputPrice.setAttribute('value', 10000);
-    }
-  });
-
-  inputPrice.addEventListener('change', function () {
-    if (inputPrice.value >= 1000) {
-      housingType.value = 'flat';
-    } else if (inputPrice.value >= 0) {
-      housingType.value = 'slum';
-    } else if (inputPrice.value >= 10000) {
-      housingType.value = 'palace';
-    }
-  });
-
-  roomsNumber.addEventListener('change', function () {
-    if (roomsNumber.value === '2 rooms' || roomsNumber.value === '100 rooms') {
-      roomCapacity.value = '3 guests';
-    } else {
-      roomCapacity.value = 'no guests';
-      roomCapacity.options[0].setAttribute('disabled', true);
-    }
-  });
-
+  var syncValueWithMin = function (element, value) {
+    element.min = value;
+    element.value = value;
+  };
+  window.synchronizeFields(timeIn, timeOut, ['12', '13', '14'], ['12', '13', '14'], syncValues);
+  window.synchronizeFields(housingType, inputPrice, ['flat', 'slum', 'palace'], ['1000', '0', '10000'], syncValueWithMin);
+  window.synchronizeFields(roomsNumber, roomCapacity, ['1 room', '2 rooms', '100 rooms'], ['no guests', '3 guests', '3 guests'], syncValues);
 
   formSubmit.addEventListener('click', function (event) {
     event.preventDefault();

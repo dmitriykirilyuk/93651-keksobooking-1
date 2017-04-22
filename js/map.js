@@ -39,12 +39,11 @@
       };
       var posLeftPin = draggablePin.offsetLeft - shift.x;
       var posTopPin = draggablePin.offsetTop - shift.y;
-      console.log(posLeftPin, posTopPin)
+
       if (posLeftPin > 1163) {
         posLeftPin = 1163;
         tokyoMap.removeEventListener('mousemove', onMouseMove);
         tokyoMap.removeEventListener('mouseup', onMouseUp);
-        console.log('akfl');
       } else if (posLeftPin < -37) {
         posLeftPin = -37;
         tokyoMap.removeEventListener('mousemove', onMouseMove);
