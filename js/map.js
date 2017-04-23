@@ -3,6 +3,9 @@
   var pinMap = document.querySelector('.tokyo__pin-map');
   pinMap.addEventListener('click', window.activatePin);
   pinMap.addEventListener('keydown', window.activatePinByKey);
+  var posLeftMax = 1200 - 37;
+  var postTopMax = 700 - 94;
+  var postLeftMin = 0 - 37;
   var drawPins = function (pins) {
     var fragment = document.createDocumentFragment();
     for (var i = 0; i < pins.length; i++) {
@@ -40,16 +43,16 @@
       var posLeftPin = draggablePin.offsetLeft - shift.x;
       var posTopPin = draggablePin.offsetTop - shift.y;
 
-      if (posLeftPin > 1163) {
-        posLeftPin = 1163;
+      if (posLeftPin > posLeftMax) {
+        posLeftPin = posLeftMax;
         tokyoMap.removeEventListener('mousemove', onMouseMove);
         tokyoMap.removeEventListener('mouseup', onMouseUp);
-      } else if (posLeftPin < -37) {
-        posLeftPin = -37;
+      } else if (posLeftPin < postLeftMin) {
+        posLeftPin = postLeftMin;
         tokyoMap.removeEventListener('mousemove', onMouseMove);
         tokyoMap.removeEventListener('mouseup', onMouseUp);
-      } else if (posTopPin > 606) {
-        posTopPin = 606;
+      } else if (posTopPin > postTopMax) {
+        posTopPin = postTopMax;
         tokyoMap.removeEventListener('mousemove', onMouseMove);
         tokyoMap.removeEventListener('mouseup', onMouseUp);
       }
