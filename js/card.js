@@ -34,7 +34,6 @@
       var featuresList = offerList.features[k];
       var featuresSpan = document.createElement('span');
       featuresSpan.classList.add('feature__image', 'feature__image--' + featuresList);
-      // featuresFragment.appendChild(featuresSpan);
     }
     lodgeFeatures.appendChild(featuresFragment);
     lodgeDescription.textContent = offerList.description;

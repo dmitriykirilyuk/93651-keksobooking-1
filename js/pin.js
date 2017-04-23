@@ -2,7 +2,6 @@
 (function () {
   var ESCAPE_KEY = 27;
   var ENTER_KEY = 13;
-  var dialog = document.querySelector('.dialog');
   var dialogClose = document.querySelector('.dialog__close');
   var pinActive;
   window.getPinNode = function (pinData, i) {
@@ -34,25 +33,25 @@
     if (offer) {
       window.createDialog(offer);
       pinActive.classList.add('pin--active');
-      dialog.style.display = 'block';
+      window.showCard();
     }
   };
 
   dialogClose.addEventListener('click', function () {
-    dialog.style.display = 'none';
+    window.hideCard();
     pinActive.classList.remove('pin--active');
     pinActive = null;
   });
 
   document.addEventListener('keydown', function (evt) {
     if (evt.keyCode === ESCAPE_KEY) {
-      dialog.style.display = 'none';
+      window.hideCard();
       pinActive.classList.remove('pin--active');
       pinActive = null;
     }
 
     if (document.activeElement === dialogClose && evt.keyCode === ENTER_KEY) {
-      dialog.style.display = 'none';
+      window.hideCard();
       pinActive.classList.remove('pin--active');
       pinActive = null;
       evt.preventDefault();
@@ -63,7 +62,7 @@
       pinActive.classList.remove('pin--active');
     }
     if (event.keyCode === ENTER_KEY) {
-      dialog.style.display = 'block';
+      window.showCard();
       pinActive = event.target;
       var index = pinActive.getAttribute('data-index');
       var offer = window.offersList[index];
