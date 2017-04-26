@@ -655,3 +655,76 @@ select option:hover {
 .rounded {
     border-radius: 50%;
 }
+
+.popup-error {
+  display: none;
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%);
+  width: 40%;
+  height: 200px;
+  padding: 80px 0 20px;
+  border-radius: 10px;
+  box-shadow: inset 0 0 50px 0 #ede7f6;
+  background-color: #4C15A9;
+  color: #fff;
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 24px;
+}
+
+.popup-error__message {
+  margin: 0;
+  text-align: center;
+}
+
+.popup-error__close {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 30px;
+  height: 30px;
+  background-color: #ede7f6;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+}
+
+.popup-error__close:hover {
+  box-shadow: inset 0 0 5px 0 #000;
+}
+
+.popup-error__close:active {
+  box-shadow: 0 0 5px 0 #fff;
+}
+
+.popup-error__close::after {
+  content: "";
+  display: table;
+  clear: both;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-left: -10px;
+  transform: rotate(45deg);
+  width: 20px;
+  height: 2px;
+  background-color: #4C15A9;
+
+}
+
+.popup-error__close::before {
+  content: "";
+  display: table;
+  clear: both;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-left: -10px;
+  transform: rotate(-45deg);
+  width: 20px;
+  height: 2px;
+  background-color: #4C15A9;
+
+}
