@@ -20,7 +20,7 @@
     return pin;
   };
 
-  window.activatePin = function (event) {
+  var activatePin = function (event, offersList) {
     if (pinActive) {
       pinActive.classList.remove('pin--active');
     }
@@ -29,10 +29,10 @@
       pinActive = pinActive.parentNode;
     }
     var index = pinActive.getAttribute('data-index');
-    var offer = window.offersList[index];
+    var offer = offersList[index];
+    pinActive.classList.add('pin--active');
     if (offer) {
       window.createDialog(offer);
-      pinActive.classList.add('pin--active');
       window.showCard();
     }
   };
@@ -57,7 +57,15 @@
       evt.preventDefault();
     }
   });
-  window.activatePinByKey = function (event) {
+  window.setPinEvents = function (pinMap, offersList) {
+    pinMap.addEventListener('click', function (event) {
+      activatePin(event, offersList);
+    });
+    pinMap.addEventListener('keydown', function (event) {
+      activatePinByKey(event, offersList);
+    });
+  };
+  var activatePinByKey = function (event, offersList) {
     if (pinActive) {
       pinActive.classList.remove('pin--active');
     }
@@ -65,7 +73,7 @@
       window.showCard();
       pinActive = event.target;
       var index = pinActive.getAttribute('data-index');
-      var offer = window.offersList[index];
+      var offer = offersList[index];
       window.createDialog(offer);
       pinActive.classList.add('pin--active');
     }
