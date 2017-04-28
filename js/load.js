@@ -9,12 +9,12 @@
     xmlhRequest.responseType = 'json';
     var onError = function (message) {
       var closeByClick = function () {
-        popupError.style.display ='none';
+        popupError.style.display = 'none';
       };
-      popupError.style.display ='block';
+      popupError.style.display = 'block';
       popupMessage.textContent = message;
       popupClose.addEventListener('click', closeByClick);
-      document.addEventListener('keydown', function(evtClose) {
+      document.addEventListener('keydown', function (evtClose) {
         if (evtClose.keyCode === ESCAPE_KEY) {
           closeByClick();
         }
