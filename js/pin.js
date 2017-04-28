@@ -57,12 +57,30 @@
       evt.preventDefault();
     }
   });
-  window.setPinEvents = function (pinMap, offersList) {
+  window.setPinEvents = function (offersList) {
     pinMap.addEventListener('click', function (event) {
       activatePin(event, offersList);
     });
     pinMap.addEventListener('keydown', function (event) {
       activatePinByKey(event, offersList);
+    });
+  };
+  var tokyoFilters = document.querySelector('.tokyo__filters');
+  var housingType = tokyoFilters.querySelector('#housing_type');
+  var pinMap = document.querySelector('.tokyo__pin-map');
+  var clearMap = function () {
+    var pinMapChildren = pinMap.querySelectorAll('.pin:not(.pin__main)');
+    Array.prototype.forEach.call(pinMapChildren, function (pin) {
+      pinMap.removeChild(pin);
+    });
+  };
+  window.setFilterEvents = function (offersList) {
+    tokyoFilters.addEventListener('change', function (evt) {
+      var filterPins = offersList.filter(function (pinOffer) {
+        return pinOffer.offer.type === housingType.value;
+      });
+      clearMap();
+      window.drawPins(filterPins);
     });
   };
   var activatePinByKey = function (event, offersList) {

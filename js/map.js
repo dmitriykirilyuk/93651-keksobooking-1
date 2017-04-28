@@ -13,7 +13,7 @@
       fragment.appendChild(pin);
     }
     pinMap.appendChild(fragment);
-    window.setPinEvents(pinMap, pins);
+
   };
 
   var draggablePin = document.querySelector('.pin__main');
