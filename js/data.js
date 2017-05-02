@@ -7,8 +7,12 @@
   var popupMessage = document.querySelector('.popup-error__message');
 
   var onSuccess = function (data) {
-    window.drawPins(data);
-    window.debounce(window.setFilterEvents(data));
+    var defaultPins = data.sort(function () {
+      return 0.5 - Math.random();
+    });
+
+    window.drawPins(defaultPins.slice(0, 3));
+    window.setFilterEvents(data);
   };
 
   var onError = function (message) {
@@ -18,6 +22,7 @@
 
     popupError.style.display = 'block';
     popupMessage.textContent = message;
+
     popupClose.addEventListener('click', closeByClick);
     document.addEventListener('keydown', function (evtClose) {
 

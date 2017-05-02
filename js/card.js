@@ -45,8 +45,10 @@
     }
 
     lodgeFeatures.appendChild(featuresFragment);
+
     lodgeDescription.textContent = offerList.description;
     dialogAvatar.src = newDialog.author.avatar;
+
     offerDialog.replaceChild(templateCopy, lodgePanel);
   };
 })();

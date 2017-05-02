@@ -23,6 +23,7 @@
     });
 
     xmlhRequest.timeout = 10000;
+
     xmlhRequest.open('GET', URL);
     xmlhRequest.send();
   };
