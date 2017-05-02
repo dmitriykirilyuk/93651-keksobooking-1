@@ -1,6 +1,8 @@
 'use strict';
+
 (function () {
   var template = document.querySelector('#lodge-template');
+
   window.createDialog = function (newDialog) {
     var templateCopy = template.content.cloneNode(true);
     var templateData = newDialog;
@@ -17,9 +19,12 @@
     var dialogTitle = offerDialog.querySelector('.dialog__title');
     var dialogAvatar = dialogTitle.querySelector('img');
     var offerList = templateData.offer;
+    var featuresFragment = document.createDocumentFragment();
+
     lodgeTitle.textContent = offerList.title;
     lodgeAddress.textContent = offerList.address;
     lodgePrice.textContent = offerList.price + '&#x20bd;/ночь';
+
     if (offerList.type === 'flat') {
       lodgeType.textContent = 'Квартира';
     } else if (offerList.type === 'bungalo') {
@@ -27,14 +32,18 @@
     } else {
       lodgeType.textContent = 'Дом';
     }
-    lodgeRooms.textContent = 'Для ' + offerList.price + ' гостей в ' + offerList.rooms + ' комнатах';
+
+    lodgeRooms.textContent = 'Для ' + offerList.guests + ' гостей в ' + offerList.rooms + ' комнатах';
     lodgeCheckIn.textContent = 'Заезд после ' + offerList.checkin + ', выезд до ' + offerList.checkout;
-    var featuresFragment = document.createDocumentFragment();
+
     for (var k = 0; k < offerList.features.length; k++) {
       var featuresList = offerList.features[k];
       var featuresSpan = document.createElement('span');
+
       featuresSpan.classList.add('feature__image', 'feature__image--' + featuresList);
+      featuresFragment.appendChild(featuresSpan);
     }
+
     lodgeFeatures.appendChild(featuresFragment);
     lodgeDescription.textContent = offerList.description;
     dialogAvatar.src = newDialog.author.avatar;
